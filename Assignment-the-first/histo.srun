@@ -12,7 +12,7 @@
 
 conda activate bgmp_py39
 
-##/usr/bin/time -v ./histograms.py -f /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R2_001.fastq.gz -r 8 -o R2_hist.png
-##/usr/bin/time -v ./histograms.py -f /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R3_001.fastq.gz -r 8 -o R3_hist.png
-##/usr/bin/time -v ./histograms.py -f /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R1_001.fastq.gz -r 101 -o R1_hist.png
+/usr/bin/time -v ./histograms.py -f /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R2_001.fastq.gz -r 8 -o R2_hist.png
+/usr/bin/time -v ./histograms.py -f /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R3_001.fastq.gz -r 8 -o R3_hist.png
+/usr/bin/time -v ./histograms.py -f /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R1_001.fastq.gz -r 101 -o R1_hist.png
 /usr/bin/time -v ./histograms.py -f /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R4_001.fastq.gz -r 101 -o R4_hist.png
