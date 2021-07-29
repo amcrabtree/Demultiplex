@@ -3,6 +3,8 @@
 ## Part 1
 1. Be sure to upload your Python script.
 
+Python script located in `./histograms.py`
+
 | File name                    | label           |
 |------------------------------|-----------------|
 | 1294_S1_L008_R1_001.fastq.gz | forward reads   |
