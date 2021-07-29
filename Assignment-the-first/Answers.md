@@ -19,14 +19,17 @@
     
 ## Part 2
 1. Define the problem
-Divide up the forward and reverse reads into the appropriate sample bins according to their indexes. Account for index hopping, low qscores in indexes, and sequenced indexes that don't match barcode file
+
+> Divide up the forward and reverse reads into the appropriate sample bins according to their indexes. Account for index hopping, low qscores in indexes, and sequenced indexes that don't match barcode file
 
 2. Describe output
-one FASTQ file containing forward and reverse reads for each adapter (of which there are 24, in this case) + a FASTQ file for index hopping + FASTQ file for records with barcode sequencing errors. 
+
+> one FASTQ file containing forward and reverse reads for each adapter (of which there are 24, in this case) + a FASTQ file for index hopping + FASTQ file for records with barcode sequencing errors. 
 
 3. Upload your [4 input FASTQ files](../TEST-input_FASTQ) and your [>=6 expected output FASTQ files](../TEST-output_FASTQ).
 
 4. Pseudocode
+
 - open barcode file, store barcodes as dictionary, close file. 
 - open input files (R1, R2, R3, R4)
 - generate/open output files (sample bins [# of barcodes *2], swapping bins [2], dust bins [2])
@@ -42,7 +45,8 @@ one FASTQ file containing forward and reverse reads for each adapter (of which t
 - close output files
 - close input files
 
-for optional read correction:
+**for optional read correction:**
+
 - convert barcode dict to tuple of barcodes for bc_correct fxn
 - for each barcode in header of formatted output records in dust bin: 
     - isolate 1st barcode seq
@@ -53,15 +57,15 @@ for optional read correction:
 
 5. High level functions. For each function, be sure to include:
 
-def revc (seq: str) -> str:
-	'''converts DNA seq to reverse complement'''
-	seq=seq.upper()
-	nucd = {"A":  "T", "T": "A", "C": "G", "G": "C", "N": "N"}
-	rseq=seq.translate(str.maketrans(nucd))[::-1] 
-	return rseq
-if __name__ == "__main__":
-	assert revc("TGCAGGTT") == "AACCTGCA"
-	print("PASS\trevc")
+    def revc (seq: str) -> str:
+        '''converts DNA seq to reverse complement'''
+        seq=seq.upper()
+        nucd = {"A":  "T", "T": "A", "C": "G", "G": "C", "N": "N"}
+        rseq=seq.translate(str.maketrans(nucd))[::-1] 
+        return rseq
+    if __name__ == "__main__":
+        assert revc("TGCAGGTT") == "AACCTGCA"
+        print("PASS\trevc")
 
 def bc_correct(qbar_seq: str, barcode_txt: tuple):
     '''input is barcode sequence in question and a tuple of possible
