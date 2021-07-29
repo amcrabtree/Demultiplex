@@ -1,0 +1,18 @@
+#!/bin/bash
+#SBATCH --partition=bgmp        	### Partition (like a queue in PBS)
+#SBATCH --job-name=homework        	### Job Name
+#SBATCH --output=homework-%j.log   	### File in which to store job output
+#SBATCH --error=homework-%j.err    	### File in which to store job error messages
+#SBATCH --time=0-20:00:00       	### Wall clock time limit in Days-HH:MM:SS
+#SBATCH --nodes=1               	### Number of nodes needed for the job
+#SBATCH --cpus-per-task=8       	### Number of CPUs to be used per task
+#SBATCH --account=bgmp          	### Account used for job submission
+#SBATCH --mail-user=acrabtre@uoregon.edu    ### email for job submission notifications
+#SBATCH --mail-type=ALL         	### specifies types of notification emails to send
+
+conda activate bgmp_py39
+
+##/usr/bin/time -v ./histograms.py -f /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R2_001.fastq.gz -r 8 -o R2_hist.png
+##/usr/bin/time -v ./histograms.py -f /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R3_001.fastq.gz -r 8 -o R3_hist.png
+##/usr/bin/time -v ./histograms.py -f /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R1_001.fastq.gz -r 101 -o R1_hist.png
+/usr/bin/time -v ./histograms.py -f /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R4_001.fastq.gz -r 101 -o R4_hist.png
