@@ -57,15 +57,15 @@
 
 5. High level functions. For each function, be sure to include:
 
-    def revc (seq: str) -> str:
-        '''converts DNA seq to reverse complement'''
-        seq=seq.upper()
-        nucd = {"A":  "T", "T": "A", "C": "G", "G": "C", "N": "N"}
-        rseq=seq.translate(str.maketrans(nucd))[::-1] 
-        return rseq
-    if __name__ == "__main__":
-        assert revc("TGCAGGTT") == "AACCTGCA"
-        print("PASS\trevc")
+        def revc (seq: str) -> str:
+            '''converts DNA seq to reverse complement'''
+            seq=seq.upper()
+            nucd = {"A":  "T", "T": "A", "C": "G", "G": "C", "N": "N"}
+            rseq=seq.translate(str.maketrans(nucd))[::-1] 
+            return rseq
+        if __name__ == "__main__":
+            assert revc("TGCAGGTT") == "AACCTGCA"
+            print("PASS\trevc")
 
 def bc_correct(qbar_seq: str, barcode_txt: tuple):
     '''input is barcode sequence in question and a tuple of possible
