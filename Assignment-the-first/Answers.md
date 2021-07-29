@@ -12,11 +12,24 @@
 
 2. Per-base NT distribution
     1. Use markdown to insert your 4 histograms here.
-    2. ![](R1_hist.png)
-    3. ![](R2_hist.png)
-    4. ![](R3_hist.png)
-    5. ![](R4_hist.png)
+
+    ![](R1_hist.png)
+    ![](R2_hist.png)
+    ![](R3_hist.png)
+    ![](R4_hist.png)
     
+    2. What is a good quality score cutoff for index reads and biological read pairs to utilize for sample identification and downstream analysis, respectively? Justify your answer.
+
+    A good quality score cutoff would be 20 or higher for index reads because they are shorter and it is 99% accurate (1 nt mismatch in 100), and probably a higher cutoff for reads because they are longer, so 30 (99.9% accuracy) would be good. 
+
+    3. How many indexes have undetermined (N) base calls? (Utilize your command line tool knowledge. Submit the command(s) you used. CHALLENGE: use a one-line command)
+
+        $ zcat /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R2_001.fastq.gz | awk 'NR % 4 == 2' | grep "N" | wc -l
+        3976613
+
+        $ zcat /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R3_001.fastq.gz | awk 'NR % 4 == 2' | grep "N" | wc -l
+        3328051
+
 ## Part 2
 1. Define the problem
 
