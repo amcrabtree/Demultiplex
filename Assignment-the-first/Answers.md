@@ -28,6 +28,10 @@
 
 3. Upload your [4 input FASTQ files](../TEST-input_FASTQ) and your [>=6 expected output FASTQ files](../TEST-output_FASTQ).
 
+4 input FASTQ files: `../TEST-input_FASTQ`
+
+output files: `../TEST-output_FASTQ`
+
 4. Pseudocode
 
 - open barcode file, store barcodes as dictionary, close file. 
