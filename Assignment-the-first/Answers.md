@@ -67,12 +67,12 @@
             assert revc("TGCAGGTT") == "AACCTGCA"
             print("PASS\trevc")
 
-def bc_correct(qbar_seq: str, barcode_txt: tuple):
-    '''input is barcode sequence in question and a tuple of possible
-    barcode values, output is corrected barcode or empty string 
-    if no correction possible'''
-    - determine min hamming dist in barcode tuple and save as variable
-        - initialize hamming dist variable as barcode seq length
-        - determine hamming dist between each barcode pair
-        - if dist < variable, replace
-    - open dust bin files (forward and reverse reads)
+        def bc_correct(qbar_seq: str, barcode_txt: tuple):
+            '''input is barcode sequence in question and a tuple of possible
+            barcode values, output is corrected barcode or empty string 
+            if no correction possible'''
+            - determine min hamming dist in barcode tuple and save as variable
+                - initialize hamming dist variable as barcode seq length
+                - determine hamming dist between each barcode pair
+                - if dist < variable, replace
+            - open dust bin files (forward and reverse reads)
