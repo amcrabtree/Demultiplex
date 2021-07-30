@@ -38,7 +38,7 @@ def mean_qscores(fq_in, readlen) -> np.ndarray:
 
 mean=mean_qscores(fq_in, rlen)
 
-print("position\tmean\tvar\tstdev")
+print("position\tmean")
 for i in range(len(mean)):
     print(i+1,mean[i],sep="\t")
 
