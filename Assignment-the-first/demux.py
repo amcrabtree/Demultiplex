@@ -49,7 +49,7 @@ def revc (seq: str) -> str:
 ########################## MAIN ##############################
 
 ## open barcode file, store barcodes as dictionary, close file. 
-## in bar_dict, value = index id, key = tuple of barcode & revcomp
+## in bar_dict, value = index id, key = barcode
 b = open(barf, "r")
 bar_dict={}
 b.readline() # ignore first line
@@ -86,6 +86,7 @@ junk_fw = open (dir_out+"/FW_junk", "a")
 junk_rv = open (dir_out+"/RV_junk", "a")
 
 ## make dictionary of output file info while opening them
+## file_dict - key=FW/RV & index, value=file handle
 file_dict = {}
 for el in bar_dict:
     f = dir_out + "/FW_" + el + ".fq"
@@ -95,32 +96,34 @@ for el in bar_dict:
     file_dict[fwh] = open(f, "w")
     file_dict[rvh] = open(r, "w")
 
-## record info loop
+## sort reads by indexes and write to output files
 for i in range(numrecs):
+    ## Loop for each fastq record in every read&index file at once
     r1_lst = [next(fr).rstrip() for x in range(4)]
     r2_lst = [next(rr).rstrip() for x in range(4)]
     i1_lst = [next(fi).rstrip() for x in range(4)]
     i2_lst = [next(ri).rstrip() for x in range(4)]
-    # find barcode id for I1 and I2 within barcode dict (=I1.id, I2.id) 
     bar1 = i1_lst[1]
     bar2 = revc(i2_lst[1])
+    ## create new fastq headers for output files
     new_head_r1 = r1_lst[0] + " " + bar1 + "-" + bar2 
     new_head_r2 = r2_lst[0] + " " + bar1 + "-" + bar2 
+    ## check if there are barcode sequences that are not in the barcode list (seq errors)
     if bar1 not in bar_dict.values() or bar2 not in bar_dict.values():
         junk_fw.write(new_head_r1+"\n"+r1_lst[1]+"\n"+r1_lst[2]+"\n"+r1_lst[3]+"\n")
         junk_rv.write(new_head_r2+"\n"+r2_lst[1]+"\n"+r2_lst[2]+"\n"+r2_lst[3]+"\n")
     else:
         ## check for Q-scores
         q=0 # flag for bad qscore
-        for basepos in range(len(i1_lst[3])):
+        for basepos in range(len(i1_lst[3])):  # check qscore of forward read index
             p=int(Bioinfo.convert_phred(i1_lst[3][basepos]))
             if p < minq:
                 q = 1
-        for basepos in range(len(i2_lst[3])):
+        for basepos in range(len(i2_lst[3])):  # check qscore of reverse read index
             p=int(Bioinfo.convert_phred(i2_lst[3][basepos]))
             if p < minq:
                 q = 1
-        if q == 1: # if bad qscore, write to junk bins
+        if q == 1:  # if bad qscore, write to junk bins
             junk_fw.write(new_head_r1+"\n"+r1_lst[1]+"\n"+r1_lst[2]+"\n"+r1_lst[3]+"\n")
             junk_rv.write(new_head_r2+"\n"+r2_lst[1]+"\n"+r2_lst[2]+"\n"+r2_lst[3]+"\n")
         ## check for index swapping
@@ -128,7 +131,7 @@ for i in range(numrecs):
             swap_fw.write(new_head_r1+"\n"+r1_lst[1]+"\n"+r1_lst[2]+"\n"+r1_lst[3]+"\n")
             swap_rv.write(new_head_r2+"\n"+r2_lst[1]+"\n"+r2_lst[2]+"\n"+r2_lst[3]+"\n")            
         ## write everything else to sample bins
-        else:
+        else: 
             index_id = [key for key, val in bar_dict.items() if val == bar1][0]
             f = [val for key, val in file_dict.items() if key == "FW_" + index_id][0]
             r = [val for key, val in file_dict.items() if key == "RV_" + index_id][0]
