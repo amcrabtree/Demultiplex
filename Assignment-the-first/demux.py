@@ -60,30 +60,32 @@ while line:
     line = b.readline().rstrip()
 b.close()
 
-## open input files
+'''
+## open unzipped input files
 fr = open(f_reads, "r")
 rr = open(r_reads, "r")
 fi = open(f_index, "r")
 ri = open(r_index, "r")
-
+## count lines in file (will be same for all files)
+numrecs = int((max(i for i, _ in enumerate(ri))+1)/4)
+ri = open(r_index, "r")
 '''
+
 ## open zipped input files
 fr = gzip.open(f_reads, "rt")
 rr = gzip.open(r_reads, "rt")
 fi = gzip.open(f_index, "rt")
 ri = gzip.open(r_index, "rt")
-'''
-
 ## count lines in file (will be same for all files)
 numrecs = int((max(i for i, _ in enumerate(ri))+1)/4)
-ri = open(r_index, "r")
+ri = gzip.open(r_index, "rt")
 
 ## generate/open output files (sample bins [# of barcodes *2], 
 ## swapping bins [2], dust bins [2])
-swap_fw = open (dir_out+"/FW_swap", "a")
-swap_rv = open (dir_out+"/RV_swap", "a")
-junk_fw = open (dir_out+"/FW_junk", "a")
-junk_rv = open (dir_out+"/RV_junk", "a")
+swap_fw = open (dir_out+"/FW_swap.fq", "a")
+swap_rv = open (dir_out+"/RV_swap.fq", "a")
+junk_fw = open (dir_out+"/FW_junk.fq", "a")
+junk_rv = open (dir_out+"/RV_junk.fq", "a")
 
 ## make dictionary of output file info while opening them
 ## file_dict - key=FW/RV & index, value=file handle
