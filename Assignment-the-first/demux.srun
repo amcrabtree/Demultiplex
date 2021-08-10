@@ -1,0 +1,24 @@
+#!/bin/bash
+#SBATCH --partition=bgmp        	### Partition (like a queue in PBS)
+#SBATCH --job-name=demux       	    ### Job Name
+#SBATCH --output=hw-%j.log   	    ### File in which to store job output
+#SBATCH --error=hw-%j.err    	    ### File in which to store job error messages
+#SBATCH --time=0-20:00:00       	### Wall clock time limit in Days-HH:MM:SS
+#SBATCH --nodes=1               	### Number of nodes needed for the job
+#SBATCH --cpus-per-task=1       	### Number of CPUs to be used per task
+#SBATCH --account=bgmp          	### Account used for job submission
+#SBATCH --mail-user=acrabtre@uoregon.edu    ### email for job submission notifications
+#SBATCH --mail-type=ALL         	### specifies types of notification emails to send
+
+## load conda environment
+conda activate bgmp_py39
+
+## run python script
+/usr/bin/time -v ./demux.py \
+    -1 /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R1_001.fastq.gz \
+    -2 /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R2_001.fastq.gz \
+    -3 /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R3_001.fastq.gz \
+    -4 /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R4_001.fastq.gz \
+    -b /projects/bgmp/shared/2017_sequencing/indexes.txt \
+    -q 20 \
+    -o ../Assignment-the-third/REAL-output_FASTQ
