@@ -4,7 +4,7 @@
 #SBATCH --output=demux-%j.log   	### File in which to store job output
 #SBATCH --error=demux-%j.err    	### File in which to store job error messages
 #SBATCH --time=0-20:00:00       	### Wall clock time limit in Days-HH:MM:SS
-#SBATCH --nodes=8               	### Number of nodes needed for the job
+#SBATCH --nodes=1               	### Number of nodes needed for the job
 #SBATCH --cpus-per-task=1       	### Number of CPUs to be used per task
 #SBATCH --account=bgmp          	### Account used for job submission
 #SBATCH --mail-user=acrabtre@uoregon.edu    ### email for job submission notifications
@@ -20,21 +20,21 @@ R3="/projects/bgmp/shared/2017_sequencing/1294_S1_L008_R3_001.fastq.gz"
 R4="/projects/bgmp/shared/2017_sequencing/1294_S1_L008_R4_001.fastq.gz"
 barcode_f="/projects/bgmp/shared/2017_sequencing/indexes.txt"
 qnum="20"
-out_dir="REAL-output_FASTQ"
+out_dir="REAL-output"
 report_script=$out_dir/demux_report.Rmd
 
 ## run demux python script
 /usr/bin/time -v ./demux.py \
-    -1 /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R1_001.fastq.gz \
-    -2 /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R2_001.fastq.gz \
-    -3 /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R3_001.fastq.gz \
-    -4 /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R4_001.fastq.gz \
-    -b /projects/bgmp/shared/2017_sequencing/indexes.txt \
-    -q 20 \
-    -o REAL-output
+    -1 $R1 \
+    -2 $R2 \
+    -3 $R3 \
+    -4 $R4 \
+    -b $barcode_f \
+    -q $qnum \
+    -o $out_dir
 
 ## make html report using knitr
-Rscript -e "rmarkdown::render($report_script)"
+Rscript -e 'rmarkdown::render("demux_report.Rmd")'
 
 ## zip all output fastq files
 for file in $out_dir/*.fq
