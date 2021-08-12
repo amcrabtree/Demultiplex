@@ -20,8 +20,9 @@ R3="/projects/bgmp/shared/2017_sequencing/1294_S1_L008_R3_001.fastq.gz"
 R4="/projects/bgmp/shared/2017_sequencing/1294_S1_L008_R4_001.fastq.gz"
 barcode_f="/projects/bgmp/shared/2017_sequencing/indexes.txt"
 qnum="20"
-out_dir="REAL-output"
-report_script=$out_dir/demux_report.Rmd
+out_dir=REAL-output
+reportscript=REAL-output/demux_report.Rmd
+outdata=REAL-output/bin_counts.csv
 
 ## run demux python script
 /usr/bin/time -v ./demux.py \
@@ -34,7 +35,8 @@ report_script=$out_dir/demux_report.Rmd
     -o $out_dir
 
 ## make html report using knitr
-Rscript -e 'rmarkdown::render("demux_report.Rmd")'
+#Rscript -e 'rmarkdown::render($report_script)'
+Rscript -e 'rmarkdown::render("demux_report.Rmd", params=list(data="REAL-output/bin_counts.csv"))'
 
 ## zip all output fastq files
 for file in $out_dir/*.fq
