@@ -32,8 +32,12 @@ headers = as.list(file_txt[2,])
 demux=file_txt[3:nrow(file_txt),]
 colnames(demux) = headers
 demux$rpcount = as.integer(demux$rpcount)
+demux$rpp = 100 * demux$rpcount / sum(demux$rpcount)
 knitr::kable(demux, row.names=FALSE, align='l')
 ```
+bin = index id or bin name
+rpcount = read pair count
+rpp = read pair percent of total
 
 ## Distribution of Read Pairs in Demultiplexed Bins
 
@@ -46,11 +50,11 @@ ggplot(demux, aes(x=reorder(bin, -rpcount), y=rpcount)) +
 
 ## Other Stats
 
+Below are summary statistics: 
+
 ```{r}
+cat("Percent of Junk Reads:\t\t", demux[which(demux$bin=="junk"),3], "%\n")
+cat("Percent of Swapped Reads:\t", demux[which(demux$bin=="swap"),3], "%\n\n")
 summary(demux)
-
 ```
-
-
-
 
