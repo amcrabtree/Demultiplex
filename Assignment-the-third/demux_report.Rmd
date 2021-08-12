@@ -1,8 +1,8 @@
 ---
 title: "Demultiplexing Report"
 author: "Angela Crabtree"
-date: "8/11/2021"
-output: "html_document"
+date: "8/12/2021"
+output: "pdf_document"
 params: 
   data: ""
 ---
@@ -20,9 +20,17 @@ Inputs for the python script, `demux.py`, were 4 FASTQ files (R1, R2, R3, R4), o
 Here are the command-line arguments used:
 
 ```{r}
-file_txt = read.csv(params$data, header=FALSE)
-cmdline = file_txt[1,1]
-cmdline
+filetxt = read.csv(params$data, header=FALSE)
+cmdline = as.character(filetxt[1,1])
+cmdline = strsplit(cmdline, " ")[[1]]
+cat(cmdline[1], "\n", 
+  cmdline[2], cmdline[3], "\n",
+  cmdline[4], cmdline[5], "\n",
+  cmdline[6], cmdline[7], "\n",
+  cmdline[8], cmdline[9], "\n",
+  cmdline[10], cmdline[11], "\n",
+  cmdline[12], cmdline[13], "\n",
+  cmdline[14], cmdline[15])
 ```
 
 If barcodes in FASTQ files did not match barcodes in the barcode info file, they were also binned in "junk". If both forward and reverse barcodes for a read pair matched those in info file, but were not the same, read swapping occurred and read pairs were binned in "swap" bins. If barcodes matched, they were binned in the appropriate index bin. Counts were recorded and written to a csv output file. 
@@ -30,11 +38,10 @@ If barcodes in FASTQ files did not match barcodes in the barcode info file, they
 Here are the counts of read pairs binned: 
 
 ```{r}
-demux <- data.frame(file_txt[3:nrow(file_txt),])
-headers = c("bin","rpcount")
-colnames(demux) = headers
+demux <- data.frame(filetxt[3:nrow(filetxt),])
+colnames(demux) = c("bin","rpcount")
 row.names(demux) <- 1:nrow(demux)
-demux = transform(demux, rpcount = as.numeric(rpcount)-1)
+demux$rpcount = as.numeric(as.character(demux$rpcount))
 demux$rpp = 100 * demux$rpcount / sum(demux$rpcount)
 demux
 ```
@@ -63,8 +70,8 @@ Percent of Swapped Reads:
 cat(demux[which(demux$bin=="swap"),3], "%\n")
 ```
 
-Summary statistics for read pair counts:
+Summary statistics:
 
 ```{r}
-summary(demux$rpcount)
+summary(demux)
 ```
