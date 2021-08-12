@@ -1,0 +1,56 @@
+---
+title: "Demultiplexing Report"
+author: "Angela Crabtree"
+date: "8/11/2021"
+output:
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(ggplot2)
+```
+
+## Distribution of Read Pairs in Demultiplexed Bins
+
+Inputs for the python script, `demux.py`, were 4 FASTQ files (R1, R2, R3, R4), one tab-delimited text file with barcode id and sequence information, and a user-specified q-score cutoff. The cutoff determined which reads failed to have good-quality barcode sequences and were thus relegated to the "junk" bin. Note that this cutoff does NOT apply to the sequencing coverage of the reads themselves. 
+
+Here are the command-line arguments used:
+
+```{r}
+file_txt = read.csv('bin_counts.csv', header=FALSE)
+cmdline = file_txt[1,1]
+cat(cmdline)
+```
+
+If barcodes in FASTQ files did not match barcodes in the barcode info file, they were also binned in "junk". If both forward and reverse barcodes for a read pair matched those in info file, but were not the same, read swapping occurred and read pairs were binned in "swap" bins. If barcodes matched, they were binned in the appropriate index bin. Counts were recorded and written to a csv output file. 
+
+Here are the counts of read pairs binned: 
+
+```{r}
+headers = as.list(file_txt[2,])
+demux=file_txt[3:nrow(file_txt),]
+colnames(demux) = headers
+demux$rpcount = as.integer(demux$rpcount)
+knitr::kable(demux, row.names=FALSE, align='l')
+```
+
+## Distribution of Read Pairs in Demultiplexed Bins
+
+```{r}
+ggplot(demux, aes(x=reorder(bin, -rpcount), y=rpcount)) +
+  geom_bar(stat = "identity", position=position_dodge(), fill="lightgreen", color="darkgreen") +
+  labs(title="Distribution of Read Pairs in Demultiplexed Bins", x="Bin", y="% of Read Pairs in Bin") +
+  theme(axis.text.x = element_text(angle = 45, hjust=1))
+```
+
+## Other Stats
+
+```{r}
+summary(demux)
+
+```
+
+
+
+
