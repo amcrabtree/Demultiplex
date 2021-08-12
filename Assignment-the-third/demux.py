@@ -27,26 +27,6 @@ barf = args.barcode_file
 minq = args.min_qscore
 dir_out = args.output_dir
 
-########################## FUNCTIONS ##############################
-
-def revc (seq: str) -> str:
-    '''converts DNA seq to reverse complement'''
-    seq=seq.upper()
-    nucd = {"A":  "T", "T": "A", "C": "G", "G": "C", "N": "N"}
-    rseq=seq.translate(str.maketrans(nucd))[::-1] 
-    return rseq
-
-# ## build this if you have time for error correction
-# def bc_correct(qbar_seq: str, barcode_txt: tuple):
-#     '''input is barcode sequence in question and a tuple of possible
-#     barcode values, output is corrected barcode or empty string 
-#     if no correction possible'''
-#     - determine min hamming dist in barcode tuple and save as variable
-#         - initialize hamming dist variable as barcode seq length
-#         - determine hamming dist between each barcode pair
-#         - if dist < variable, replace
-#     - open dust bin files (forward and reverse reads)
-
 ########################## MAIN ##############################
 
 ## open barcode file, store barcodes as dictionary, close file. 
@@ -115,7 +95,7 @@ for i in range(numrecs):
     i1_lst = [next(fi).rstrip() for x in range(4)]
     i2_lst = [next(ri).rstrip() for x in range(4)]
     bar1 = i1_lst[1]
-    bar2 = revc(i2_lst[1])
+    bar2 = Bioinfo.revc(i2_lst[1])
     ## create new fastq headers for output files
     new_head_r1 = r1_lst[0] + " " + bar1 + "-" + bar2 
     new_head_r2 = r2_lst[0] + " " + bar1 + "-" + bar2 
