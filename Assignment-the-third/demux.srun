@@ -35,7 +35,6 @@ outdata=REAL-output/bin_counts.csv
     -o $out_dir
 
 ## make html report using knitr
-#Rscript -e 'rmarkdown::render($report_script)'
 Rscript -e 'rmarkdown::render("demux_report.Rmd", params=list(data="REAL-output/bin_counts.csv"))'
 
 ## zip all output fastq files
