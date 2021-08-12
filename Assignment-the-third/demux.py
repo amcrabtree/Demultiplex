@@ -36,6 +36,7 @@ def revc (seq: str) -> str:
     rseq=seq.translate(str.maketrans(nucd))[::-1] 
     return rseq
 
+# ## build this if you have time for error correction
 # def bc_correct(qbar_seq: str, barcode_txt: tuple):
 #     '''input is barcode sequence in question and a tuple of possible
 #     barcode values, output is corrected barcode or empty string 
@@ -60,9 +61,8 @@ while line:
     line = b.readline().rstrip()
 b.close()
 
-print(f_reads.split(".")[-1])
-
-if f_reads.split(".")[-1] == ".gz":
+## open input files
+if f_reads.split(".")[-1] == "gz":
     ## open zipped input files
     fr = gzip.open(f_reads, "rt")
     rr = gzip.open(r_reads, "rt")
@@ -185,10 +185,9 @@ plt.savefig(dir_out+"/demux_hist.png", format="png")
 
 ########################## OUTPUT DATA ##############################
 
+## write bin values to output file 
 import sys
 cmdline = (' '.join(sys.argv))
-
-## write bin values to output file 
 with open(dir_out+"/bin_counts.csv", "a") as mdrpt:
     mdrpt.write(cmdline + "\n")
     mdrpt.write("bin,rpcount\n")
