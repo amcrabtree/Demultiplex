@@ -7,13 +7,13 @@ import Bioinfo
 ########################## ARGPARSE ##############################
 # define command line arguments
 def get_args():
-	parser = argparse.ArgumentParser(description="Normalizes the k-mer coverage of your input reads and saves those reads to a new FASTQ file")
+	parser = argparse.ArgumentParser(description="Demultiplexes reads according to barcodes. Use for single-indexed libraries only.")
 	parser.add_argument("-1", "--R1_file", help="R1 (forward read) file", required=True)
 	parser.add_argument("-2", "--R2_file", help="R2 (forward index) file", required=True)
 	parser.add_argument("-3", "--R3_file", help="R3 (reverse index) file", required=True) 
 	parser.add_argument("-4", "--R4_file", help="R4 (reverse read) file", required=True)
 	parser.add_argument("-b", "--barcode_file", help="file of barcodes", required=True)
-	parser.add_argument("-q", "--min_qscore", help="minimum qscore allowed", required=False, type=int)
+	parser.add_argument("-q", "--min_qscore", help="minimum qscore allowed; default=20", required=False, type=int)
 	parser.add_argument("-o", "--output_dir", help="output folder for fastq files", required=True)
 	return parser.parse_args()
 
