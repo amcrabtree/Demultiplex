@@ -1,0 +1,42 @@
+#!/bin/bash
+#SBATCH --partition=bgmp        	### Partition (like a queue in PBS)
+#SBATCH --job-name=demux       	    ### Job Name
+#SBATCH --output=demux-%j.log   	### File in which to store job output
+#SBATCH --error=demux-%j.err    	### File in which to store job error messages
+#SBATCH --time=0-20:00:00       	### Wall clock time limit in Days-HH:MM:SS
+#SBATCH --nodes=1               	### Number of nodes needed for the job
+#SBATCH --cpus-per-task=1       	### Number of CPUs to be used per task
+#SBATCH --account=bgmp          	### Account used for job submission
+#SBATCH --mail-user=acrabtre@uoregon.edu    ### email for job submission notifications
+#SBATCH --mail-type=ALL         	### specifies types of notification emails to send
+
+## load conda environment
+conda activate bgmp_py39
+
+## files
+R1="/projects/bgmp/shared/2017_sequencing/1294_S1_L008_R1_001.fastq.gz"
+R2="/projects/bgmp/shared/2017_sequencing/1294_S1_L008_R2_001.fastq.gz"
+R3="/projects/bgmp/shared/2017_sequencing/1294_S1_L008_R3_001.fastq.gz"
+R4="/projects/bgmp/shared/2017_sequencing/1294_S1_L008_R4_001.fastq.gz"
+barcode_f="/projects/bgmp/shared/2017_sequencing/indexes.txt"
+qnum="20"
+out_dir=REAL-output
+
+## run demux python script
+/usr/bin/time -v ./demux_err.py \
+    -1 $R1 \
+    -2 $R2 \
+    -3 $R3 \
+    -4 $R4 \
+    -b $barcode_f \
+    -q $qnum \
+    -o $out_dir
+
+## make html report using knitr
+Rscript -e 'rmarkdown::render("demux_err_report.Rmd", params=list(data="REAL-output/bin_counts_err.csv"))'
+
+## zip all output fastq files
+for file in $out_dir/*.fq
+    do
+    gzip $file
+    done
